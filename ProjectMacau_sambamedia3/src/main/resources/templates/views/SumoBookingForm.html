@@ -1,0 +1,164 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Thymeleaf Demo</title>
+	<!-- Bootstrap -->
+	
+ <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    
+     <link rel="stylesheet" th:href="@{/css/bootstrap.css}">
+    <script th:src="@{/js/jquery.js}"></script>
+    <script th:src="@{/js/bootstrap.js}"></script>
+    
+
+</head>
+<body>
+
+<nav class="navbar navbar-default">
+<div class="container">
+<div class="nav-header">
+	<div class="navbar-brand">Sumo Booking Counter	</div>
+</div>
+	<ul class="nav navbar-nav">
+	<li> <a href="#">Home</a></li>
+	<li><a href=" ">Destination</a></li>
+	<li><a href=" ">About</a></li>
+	</ul>
+</div>
+	</nav>
+	
+	
+	<h3>Sumo Tickets Booking</h3>
+	
+
+
+<!--  <div class="alert alert-danger" th:text="${title}"></div>
+
+<div class="alert alert-danger" th:text="${Ruak}"></div>-->
+
+
+<div class="container">
+<p> A= Available    X= Not Available</p>
+<table class="table table-bordered table-striped">
+		<thead class="thead-dark">
+			<tr>
+			
+				<th >Seat No1</th>
+				<th>Seat No2</th>
+				<th>Driver</th>
+			
+			</tr>
+			
+		</thead>
+		
+		<tbody>
+			<tr th:each="tempCom: ${things}">
+				
+				<td th:text="${tempCom.Seat1}" />
+				<td th:text="${tempCom.Seat2}" />	
+				<td>	X  </td>
+				
+			</tr>
+		</tbody>	
+		
+		<thead class="thead-dark">
+			<tr>
+			
+				<th >Seat No3</th>
+				<th>Seat No4</th>
+				<th>Seat No5</th>
+			
+			</tr>
+			
+		</thead>
+		
+		<tbody>
+			<tr th:each="tempCom: ${things}">
+				
+				<td th:text="${tempCom.Seat3}" />
+				<td th:text="${tempCom.Seat4}" />	
+				<td th:text="${tempCom.Seat5}" />
+				
+			</tr>
+		</tbody>	
+		
+		
+			<thead class="thead-dark">
+			<tr>
+			
+				<th >Seat No6</th>
+				<th>Seat No7</th>
+				<th>Seat No8</th>
+			
+			</tr>
+			
+		</thead>
+		
+		<tbody>
+			<tr th:each="tempCom: ${things}">
+				
+				<td th:text="${tempCom.Seat6}" />
+				<td th:text="${tempCom.Seat7}" />	
+				<td th:text="${tempCom.Seat8}" />
+				
+			</tr>
+		</tbody>	
+		
+  			
+	</table>
+	
+	
+	
+<form th:method="post" th:object="${booking}" th:action="sumoBooking">
+	
+	
+	
+	
+	
+	<input type="text" th:field="*{Name}"
+					class="form-control mb-4 col-8" placeholder="Name">
+					
+	<input type="text" th:field="*{Address}"
+					class="form-control mb-4 col-8" placeholder="Address">
+					
+	 <input type="text" th:field="*{Seat}"
+					class="form-control mb-4 col-8" placeholder="Enter Your Seat">
+					
+		
+		
+		
+		
+    <button type="submit" class="btn btn-info col-2">Book</button>			
+</form>
+
+
+</div>
+
+<form  th:action="@{https://www.example.com/payment/success/}" method="POST">
+<script
+    src="https://checkout.razorpay.com/v1/checkout.js"
+    th:data-key="rzp_test_7IAjCksmwutVn3"
+    th:data-amount="299" 
+    data-buttontext="Pay with Razorpay"
+  	data-name="Acme Corp"
+    data-description="A Wild Sheep Chase is the third novel by Japanese author Haruki Murakami"
+    data-image="https://example.com/your_logo.jpg"
+    data-prefill.name="Gaurav Kumar"
+    data-prefill.email="gaurav.kumar@example.com"
+    data-theme.color="#F37254"
+></script>
+<input type="hidden" custom="Hidden Element" name="hidden">
+</form>
+          
+
+ <a class="nav-link" href="views/pay">Register</a>
+	
+
+
+</body>
+
+</html>

@@ -1,0 +1,229 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <title> PHE Bill Online Payment Portal </title> 
+    <style type="text/css">
+    .modal {
+    display:block;
+    }
+    </style>
+    <style type="text/css">
+    .img-center {
+        margin: 0 auto;
+    }
+    @media (min-width: 768px){
+        .navbar-collapse.collapse {
+            width:25%;
+        }
+    }
+
+    </style>
+    <style type="text/css">
+       .razorpay-payment-button{
+      text-align: : center;
+    }
+    </style>
+
+    <!-- Styles -->
+    <link href="/css/app.css" rel="stylesheet">
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/DateTimePicker.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+
+    <!-- Scripts -->
+    <script type="text/javascript" src="/js/jquery.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <!-- <script src="/js/bootstrap-toggle.min.js"></script> -->
+    <script type="text/javascript" src="/js/DateTimePicker.js"></script>
+    <script src="/js/app.js"></script>
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <!-- Scripts -->
+    <script>
+        window.Laravel = <?php echo json_encode([
+            'csrfToken' => csrf_token(),
+        ]); ?>
+    </script>
+</head>
+<body>
+
+    <div id="app1">
+        <nav class="navbar navbar-default navbar-static-top">
+            <div class="container">
+                <div class="navbar-header">
+
+                    <!-- Collapsed Hamburger -->
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#side">
+                        <span class="sr-only">Toggle Navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+
+                    <!-- Branding Image -->
+                    <a class="navbar-brand" href="{{URL::to('/')}}">
+                         <h4 style="margin-top:11px;">Mizoram PHE Bill Online Payment</h4>
+                    </a>
+                </div>
+                <div class="collapse navbar-collapse" id="app-navbar-collapse">
+                    <!-- Left Side Of Navbar -->
+
+                    <ul class="nav navbar-nav">
+                           &nbsp;
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class='container'>
+          <div class="col-md-8 col-md-offset-2">
+            <div class="panel panel-default">
+              <div class="panel-heading"><h4>Bill Number : {{ $result['bill_no']}}</h4></div>
+              <div class="panel-body">
+                <div class='col-md-12'>
+                  <div class='col-md-5'>
+                    <h5><strong> Customer Name </strong></h5>
+                  </div>
+                  <div class='col-md-7'>
+                    <h5><strong> :  &nbsp; {{ $result['consumer_name']}} </strong></h5>
+                  </div>
+                </div>
+                <div class='col-md-12'>
+                  <div class='col-md-5'>
+                    <h5><strong> Customer Code </strong></h5>
+                  </div>
+                  <div class='col-md-7'>
+                      <h5><strong> :  &nbsp; {{ $result['consumer_no']}} </strong></h5>
+                  </div>
+                </div>    
+                <hr>
+                <div class='col-md-12'>
+                  <div class='col-md-5'>
+                    <h5><strong> Bill Date</strong></h5>
+                  </div>
+                  <div class='col-md-7'>
+                    <h5><strong> :  &nbsp; {{ date('d-M-y',strtotime($result['bill_date']))}} </strong></h5>
+                  </div>
+                </div>
+                <div class='col-md-12'>
+                  <div class='col-md-5'>
+                    <h5><strong> Bill Due Date</strong></h5>
+                  </div>
+                  <div class='col-md-7'>
+                    <h5><strong> :  &nbsp; {{ date('d-M-y',strtotime($result['bill_due_date']))}} </strong></h5>
+                  </div>
+                </div>
+                <div class='col-md-12'>
+                  <div class='col-md-5 text-danger'>
+                    <h5><strong> Bill Amount</strong></h5>
+                  </div>
+                  <div class='col-md-7 text-danger'>
+                    <h5><strong> :  &nbsp; &#8377; {{ $result['bill_amount']}} </strong></h5>
+                    <br>
+                  </div>
+                </div>
+                <?php
+                    $bill_count = App\BillCollections::where("bill_no", '=', $result['bill_no'])
+                                  ->where("STATUS", '=', 'SUCCESS')
+                                  ->count();
+                ?>
+                @if($bill_count>0)
+                <div class='text-danger text-center'>
+                  <h3>Already Paid</h3>
+                </div>
+                @elseif(date('Y-m-d',strtotime($result['bill_due_date'])) < date('Y-m-d'))
+                <div class='text-danger text-center'>
+                  <h3>Bill Due Date Exceeded</h3>
+                </div>
+                @else
+                <div class="col-md-12">
+                  <div class="alert alert-info fade in">
+                                <strong>Convenience fee for Online Payment</strong>
+                                <ul>
+                                    <li>Netbanking - Rs. 5/- plus Service Tax Per transaction processed below Rs.500 and Rs 7/- plus Service Tax Per transaction above Rs. 500/-</li>
+                                    <li>Credit Card - 1.00%  of Transaction Value plus Service Tax</li>
+                                    <li>Debit Card - 0.75% (Below 2000)/ 1.00% (Above Rs.2000) of bill amount (Plus Service Tax)</li>
+                                    <li>Mobile Wallet - Rs.5/- of Transaction Value plus Service Tax Per transaction</li>
+                                    <strong>Service Tax and other tax/taxes if any, will be charged in addition</strong>
+                                </ul>
+
+                </div>
+                <div class="col-md-12">
+                <form action="/billpayment/checkout" class="form-horizontal" method="POST">
+                  <input type="hidden" name="consumer_no" value="{{$result['consumer_no']}}"> 
+                  <input type="hidden" name="bill_date" value="{{$result['bill_date']}}">
+                  <input type="hidden" name="district" value="{{$result['district']}}">
+                    {{ Form::hidden('bill_no', $result['bill_no']) }}
+                    {{ Form::hidden('bill_no', $result['district']) }}
+                        {{ Form::hidden('bill_amount', $result['bill_amount']) }}
+                  <input type="hidden" name="mobile_no" value="{{$mobile_no}}">
+                  <input type="hidden" name="email_id" value="{{$email_id}}">
+                  <div class="col-md-12">
+                    
+                  </div>    
+                      <script
+                              src="https://checkout.razorpay.com/v1/checkout.js"
+                              data-key="{{$key}}"
+                              data-amount="{{ $result['bill_amount']*100 }}"
+                              data-currency="INR"
+                              data-name="{{$dept_name}}"
+                              data-description="Online Water Bill Payment"
+                              data-prefill.contact= "{{ $mobile_no}}"
+                              data-prefill.email="{{$email_id}}"
+                              data-order_id = "{{$order_id}}"
+                      >
+                      </script>
+                    </form>
+                    </div>
+                    @endif
+              </div>
+            </div>
+          </div>
+        </div>
+        </script>
+        <script type="text/javascript">
+        $(document).ready(function(){
+          $( ":submit" ).addClass( "btn btn-primary btn-lg btn-block" );
+
+          // $(":submit").attr("disabled", "true");
+
+        $('input[type="checkbox"]').click(function(){
+            if($(this).is(":checked")){
+               $('submit').prop('disabled', false);
+            }
+            else if($(this).is(":not(:checked)")){
+                $('#submit').prop('disabled', true);
+            }
+        });
+    });
+        </script>
+    </div>
+    <footer class="footer">
+      <div class="container">
+        <p class="text-muted" align="center">This Portal belongs to Public Health Engineering Department, Government of Mizoram <br>Developed by Mizoram State e-Governance Society(MSeGS)</p>
+      </div>
+    </footer
+    <!-- Scripts -->
+    <script src="/js/app.js"></script>
+    <script type="text/javascript" src="/js/DateTimePicker.js"></script>
+
+    <!-- Scripts -->
+    <script src="/js/app.js"></script>
+</body>
+</html>

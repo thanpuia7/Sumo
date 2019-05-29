@@ -1,0 +1,61 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+
+
+
+
+<head>
+    <!-- Required meta tags -->
+   <!-- Bootstrap -->
+	
+ <!-- Required meta tags -->
+    <meta charset="utf-8">
+    
+
+
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+     <link rel="stylesheet" th:href="@{/css/bootstrap.css}">
+     <link rel="stylesheet" th:href="@{/css/css/font-awesome.min.css}">
+    <script th:src="@{/js/jquery.js}"></script>
+    <script th:src="@{/js/bootstrap.js}"></script>
+    <script type="text/javascript" th:src="@{/js/main.js}"  src="/js/main.js"></script>
+    
+	<title>Public Service Delivery System</title>
+</head>
+
+<body>
+
+
+<div class="container">
+<P> Make Payment here</P>
+
+
+
+
+<form  th:action="@{https://www.example.com/payment/success/}" method="POST">
+<script
+    src="https://checkout.razorpay.com/v1/checkout.js"
+    th:data-key="rzp_test_7IAjCksmwutVn3"
+    th:data-amount="299" 
+    data-buttontext="Pay with Razorpay"
+  	data-name="Acme Corp"
+    data-description="A Wild Sheep Chase is the third novel by Japanese author Haruki Murakami"
+    data-image="https://example.com/your_logo.jpg"
+    data-prefill.name="Gaurav Kumar"
+    data-prefill.email="thanpuia7@gmail.com"
+    data-theme.color="#F37254"
+></script>
+<input type="hidden" custom="Hidden Element" name="hidden">
+</form>
+
+</div>
+</body>
+
+
+
+
+
+
+</html>

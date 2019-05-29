@@ -1,0 +1,123 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+
+
+
+
+<head>
+    <!-- Required meta tags -->
+   <!-- Bootstrap -->
+	
+ <!-- Required meta tags -->
+    <meta charset="utf-8">
+    
+
+
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+     <link rel="stylesheet" th:href="@{/css/bootstrap.css}">
+     <link rel="stylesheet" th:href="@{/css/css/font-awesome.min.css}">
+    <script th:src="@{/js/jquery.js}"></script>
+    <script th:src="@{/js/bootstrap.js}"></script>
+    <script type="text/javascript" th:src="@{/js/main.js}"  src="/js/main.js"></script>
+    
+	<title>Public Service Delivery System - Admin Profile</title>
+</head>
+
+<body>
+
+
+Welcome: <span sec:authentication="principal.username"/></span>
+
+
+
+<nav class="navbar navbar-default">
+<div class="container">
+<div class="nav-header">
+	<div class="navbar-brand">User List</div>
+</div>
+	<ul class="nav navbar-nav">
+	<li> <a href="#">Home</a></li>
+	<li><a href=" ">About</a></li>
+	<li><a href=" ">FAQ </a></li>
+	</ul>
+</div>
+	</nav>
+
+<div class="container">
+<div>
+	<h3>User List</h3>
+	<hr>
+	
+	<!-- Add a button -->
+	<a th:href="@{/company/showFormForAdd}"
+		class="btn btn-primary btn-sm mb-3">
+		Add User
+	</a>
+	
+	<div>
+	 <form th:action="@{/company/search}" class="form-inline">
+	        <div class="form-group mb-2">
+	         <input type="text" class="form-control" name="title" placeholder="Search Company" />
+	         <input type="submit" value="Search"  class="btn btn-primary"/>
+	        </div>
+	     </form>
+	</div>
+	
+	<table class="table table-bordered table-striped">
+		<thead class="thead-dark">
+			<tr>
+				<th>User Email</th>
+				<th>User Name</th>
+				<th>User Password</th>
+				<th>User dfgdfgs</th>
+	
+			</tr>
+		</thead>
+		
+		<tbody>
+			<tr th:each="tempUsers: ${users}">
+				
+				<td th:text="${tempUsers.email}" />
+				<td th:text="${tempUsers.name}" />		
+				<td th:text="${tempUsers.password}" />
+				<td th:text="${tempUsers.role}" />
+				
+		
+				<td>
+				<p th:each="user_roless: ${user_roles}" th:if="(${user_roless.user_email}==${tempUsers.email})" th:text="${user_roless.role_name}"> </p>
+				</td>
+				
+				
+	            
+				<td><a th:href="@{/admin/profile/(id=${tempUsers.email})}" class="btn btn-primary eBtn">Edit</a>
+					<a th:href="@{/admin/profile/(id=${tempUsers.email})}" class="btn btn-danger dBtn">Delete</a> 
+				</td>
+				
+			</tr>
+		</tbody>	
+		
+  			
+	</table>
+
+            <ul class="nav nav-pills" >
+	
+			<li class="nav-item" th:each="i : ${#numbers.sequence(0,users.totalPages-1)}">
+	
+			<a th:href="@{/admin/profile/(page=${i})}" th:text="${i}" class="nav-link"
+			
+			th:classappend="${currentPage}==${i}? 'active':''"></a>
+	
+			 </li>
+	
+			</ul>	
+
+</div>	
+
+</div>	
+
+
+
+</body>
+</html>
